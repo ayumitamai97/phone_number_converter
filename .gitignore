@@ -1,0 +1,12 @@
+*.gem
+Gemfile.lock
+tmp
+vendor/
+
+# rspec failure tracking
+.rspec_status
+
+# IDE
+.idea/
+
+.travis.yml
