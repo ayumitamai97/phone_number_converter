@@ -1,46 +1,40 @@
-require "phone_number_converter/version"
-
-class PhoneNumberConfiguration
-  attr_accessor :to_global_converter
-  attr_accessor :to_domestic_converter
-  attr_accessor :domestic_phone_number_regexp
-  attr_accessor :global_phone_number_regexp
-end
+require 'phone_number_converter/phone_number_configuration'
 
 module PhoneNumberConverter
-  class InvalidPhoneNumberError < StandardError;
-  end
+  class InvalidPhoneNumberError < StandardError; end
 
-  def self.configure
-    yield configuration
-  end
+  class << self
+    def configure
+      yield configuration
+    end
 
-  def self.configuration
-    @config ||= PhoneNumberConfiguration.new
-  end
+    def configuration
+      @config ||= PhoneNumberConfiguration.new
+    end
 
-  def self.domestic_phone_number_regexp
-    configuration.domestic_phone_number_regexp
-  end
+    def domestic_phone_number_regexp
+      configuration.domestic_phone_number_regexp
+    end
 
-  def self.global_phone_number_regexp
-    configuration.global_phone_number_regexp
-  end
+    def global_phone_number_regexp
+      configuration.global_phone_number_regexp
+    end
 
-  def self.to_global_converter
-    configuration.to_global_converter
-  end
+    def to_global_converter
+      configuration.to_global_converter
+    end
 
-  def self.to_domestic_converter
-    configuration.to_domestic_converter
-  end
+    def to_domestic_converter
+      configuration.to_domestic_converter
+    end
 
-  def self.domestic_phone_number_prefix
-    Regexp.union(to_global_converter.keys.map { |str| Regexp.new(str) }).freeze
-  end
+    def domestic_phone_number_prefix
+      Regexp.union(to_global_converter.keys.map { |str| Regexp.new(str) }).freeze
+    end
 
-  def self.global_phone_number_prefix
-    Regexp.union(to_domestic_converter.keys.map { |str| Regexp.new(Regexp.escape str) }).freeze
+    def global_phone_number_prefix
+      Regexp.union(to_domestic_converter.keys.map { |str| Regexp.new(Regexp.escape str) }).freeze
+    end
   end
 
   refine String do
@@ -70,3 +64,4 @@ module PhoneNumberConverter
     end
   end
 end
+
